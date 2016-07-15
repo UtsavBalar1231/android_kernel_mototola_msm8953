@@ -75,6 +75,8 @@ static void suspend_watchdog_clear(void)
 #define suspend_watchdog_clear()	do {} while (0)
 #endif
 
+extern void thaw_fingerprintd(void);
+
 void freeze_set_ops(const struct platform_freeze_ops *ops)
 {
 	lock_system_sleep();
@@ -402,6 +404,7 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 
  Platform_wake:
 	platform_resume_noirq(state);
+	thaw_fingerprintd();
 	dpm_resume_noirq(PMSG_RESUME);
 
  Platform_early_resume:
