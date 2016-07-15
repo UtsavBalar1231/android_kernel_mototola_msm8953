@@ -75,6 +75,10 @@ static void suspend_watchdog_clear(void)
 #define suspend_watchdog_clear()	do {} while (0)
 #endif
 
+#ifdef CONFIG_MACH_ZUK_MSM8996
+extern void thaw_fingerprintd(void);
+#endif
+
 void freeze_set_ops(const struct platform_freeze_ops *ops)
 {
 	lock_system_sleep();
@@ -402,6 +406,9 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 
  Platform_wake:
 	platform_resume_noirq(state);
+#ifdef CONFIG_MACH_ZUK_MSM8996
+	thaw_fingerprintd();
+#endif
 	dpm_resume_noirq(PMSG_RESUME);
 
  Platform_early_resume:
