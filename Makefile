@@ -645,9 +645,42 @@ KBUILD_CFLAGS   += $(call cc-disable-warning, missing-attributes)
 KBUILD_CFLAGS   += $(call cc-disable-warning, address-of-packed-member)
 KBUILD_CFLAGS   += $(call cc-disable-warning, packet-not-aligned)
 
+
+#################################
+# Cortex-A53 Optimization Flags #
+#################################
+
+KBUILD_CFLAGS   += $(call cc-option, -g0,) \
+                   $(call cc-option, -ffast-math,) \
+                   $(call cc-option, -floop-nest-optimize,) \
+                   $(call cc-option, -fgraphite-identity,) \
+                   $(call cc-option, -ftree-loop-distribution,) \
+                   $(call cc-option, -funsafe-math-optimizations,) \
+                   $(call cc-option, -mcpu=cortex-a53+crc+crypto+sve+simd,) \
+                   $(call cc-option, -march=armv8-a+crc+crypto+sve+simd,) \
+                   $(call cc-option, -mtune=cortex-a53,)
+
+KBUILD_AFLAGS   += $(call cc-option, -g0,) \
+                   $(call cc-option, -ffast-math,) \
+                   $(call cc-option, -floop-nest-optimize,) \
+                   $(call cc-option, -fgraphite-identity,) \
+                   $(call cc-option, -ftree-loop-distribution,) \
+                   $(call cc-option, -funsafe-math-optimizations,) \
+                   $(call cc-option, -mcpu=cortex-a53+crc+crypto+sve+simd,) \
+                   $(call cc-option, -march=armv8-a+crc+crypto+sve+simd,) \
+                   $(call cc-option, -mtune=cortex-a53,)
+
+KBUILD_LDFLAGS	+= $(call ld-option, -z combreloc,) \
+                   $(call ld-option, --reduce-memory-overheads)
+
+LDFLAGS_vmlinux	+= $(call ld-option, --relax) \
+                   $(call ld-option, --reduce-memory-overheads)
+
+EXTRA_CFLAGS += $(call cc-option,-funroll-loops)
+
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS	+= $(call cc-option,-Oz,-Os)
-else
+KBUILD_AFLAGS += $(call cc-option, -Oz, -Os)
+endif
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -O3
 else
@@ -663,7 +696,6 @@ KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-detect-keep-going \
 		   -mllvm -polly-vectorizer=stripmine \
 		   -mllvm -polly-invariant-load-hoisting
-endif
 endif
 
 # Tell gcc to never replace conditional load with a non-conditional one
