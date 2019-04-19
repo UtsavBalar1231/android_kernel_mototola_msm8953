@@ -105,3 +105,4 @@ obj-$(CONFIG_TOUCHSCREEN_NT36xxx)		+= nova_mmi/
 obj-$(CONFIG_TOUCHSCREEN_ILITEK)	+= mstar/
 obj-$(CONFIG_TOUCHSCREEN_ILITEK_CHIPSET) += ilitek_mmi/
 obj-$(CONFIG_SCREEN_OFF_GESTURES)		+= screen_off_gestures.o
+EXTRA_CFLAGS += $(call cc-option,-funroll-loops,)
