@@ -24,7 +24,8 @@ JOBS=8
 ZIP_DIR=$KERNEL_DIR/zip/
 KERNEL=IMMENSITY-KERNEL
 TYPE=HMP
-FINAL_KERNEL_ZIP=$KERNEL-$TYPE-$DATE_POSTFIX.zip
+RELEASE=Euphoria
+FINAL_KERNEL_ZIP=$KERNEL-$RELEASE-$TYPE-$DATE_POSTFIX.zip
 JOBS=8
 
 ############################################################################################################################################################
