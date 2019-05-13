@@ -609,9 +609,6 @@ endif # $(dot-config)
 # Defaults to vmlinux, but the arch makefile usually adds further targets
 all: vmlinux
 
-OPT_FLAGS := -fopenmp \
-		-funroll-loops
-
 ifeq ($(cc-name),clang)
 ifneq ($(CROSS_COMPILE),)
 CLANG_TRIPLE	?= $(CROSS_COMPILE)
@@ -626,9 +623,9 @@ endif
 ifneq ($(GCC_TOOLCHAIN),)
 CLANG_GCC_TC	:= --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
-KBUILD_CPPFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC) $(OPT_FLAGS)
-KBUILD_CFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC) $(OPT_FLAGS)
-KBUILD_AFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC) $(OPT_FLAGS)
+KBUILD_CFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC) $(CLANG_PREFIX)
+KBUILD_AFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC) $(CLANG_PREFIX)
+KBUILD_CPPFLAGS += $(CLANG_TARGET) $(CLANG_GCC_TC)
 KBUILD_CFLAGS += $(call cc-option, -no-integrated-as)
 KBUILD_AFLAGS += $(call cc-option, -no-integrated-as)
 endif
