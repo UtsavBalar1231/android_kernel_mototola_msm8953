@@ -58,7 +58,6 @@ bool __list_del_entry_valid(struct list_head *entry)
 		return false;
 
 	return true;
->>>>>>> d66ce5c134bceb9d9324d8e9b1da44cf19d82870
 
 }
 EXPORT_SYMBOL(__list_del_entry_valid);
